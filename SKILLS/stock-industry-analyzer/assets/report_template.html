@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投資分析報告 - 是否破線清單</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --positive-color: #27ae60;
+            --neutral-color: #f39c12;
+            --negative-color: #e74c3c;
+        }
+
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            min-width: 250px;
+        }
+
+        select {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .stock-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .stock-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .stock-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .stock-id {
+            background: #eee;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .stock-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .industry-tag {
+            display: inline-block;
+            background: #e1f0fa;
+            color: #2980b9;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .product-info {
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .product-info strong {
+            color: var(--primary-color);
+        }
+
+        .analysis-section {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            flex-grow: 1;
+            border-top: 1px solid #eee;
+        }
+
+        .analysis-title {
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .status-indicator {
+            height: 8px;
+            width: 100%;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .status-positive { background-color: var(--positive-color); }
+        .status-neutral { background-color: var(--neutral-color); }
+        .status-negative { background-color: var(--negative-color); }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .stock-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>股票產業與投資價值分析</h1>
+        <p>基於「是否破線」清單之動態研報 (共 <span id="totalCount">0</span> 檔)</p>
+    </header>
+
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="搜尋代碼、名稱、產業或產品...">
+        <select id="industryFilter">
+            <option value="">所有產業</option>
+        </select>
+    </div>
+
+    <div id="loading" class="loading-overlay">分析資料載入中...</div>
+
+    <div class="stock-grid" id="stockGrid">
+        <!-- Cards will be injected here -->
+    </div>
+</div>
+
+<script>
+    // STOCK_DATA_PLACEHOLDER
+
+    // 初始化網頁
+    function init() {
+        renderStocks(stockData);
+        populateIndustryFilter(stockData);
+        document.getElementById('totalCount').textContent = stockData.length;
+        document.getElementById('loading').style.display = 'none';
+
+        document.getElementById('searchInput').addEventListener('input', filterStocks);
+        document.getElementById('industryFilter').addEventListener('change', filterStocks);
+    }
+
+    function renderStocks(data) {
+        const grid = document.getElementById('stockGrid');
+        grid.innerHTML = '';
+        data.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'stock-card';
+            card.innerHTML = `
+                <div class="stock-header">
+                    <span class="stock-name">${item.name}</span>
+                    <span class="stock-id">${item.id}</span>
+                </div>
+                <div class="industry-tag">${item.industry}</div>
+                <div class="product-info">
+                    <strong>主要產品：</strong>${item.product}
+                </div>
+                <div class="analysis-section">
+                    <span class="analysis-title">📊 投資分析</span>
+                    ${item.analysis}
+                </div>
+                <div class="status-indicator ${getStatusClass(item.analysis)}"></div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function getStatusClass(analysis) {
+        if (analysis.includes("龍頭") || analysis.includes("強勁") || analysis.includes("爆發") || analysis.includes("核心")) return "status-positive";
+        if (analysis.includes("關注") || analysis.includes("挑戰") || analysis.includes("低位階")) return "status-negative";
+        return "status-neutral";
+    }
+
+    function populateIndustryFilter(data) {
+        const filter = document.getElementById('industryFilter');
+        const industries = [...new Set(data.map(item => item.industry))].sort();
+        industries.forEach(ind => {
+            const opt = document.createElement('option');
+            opt.value = ind;
+            opt.textContent = ind;
+            filter.appendChild(opt);
+        });
+    }
+
+    function filterStocks() {
+        const term = document.getElementById('searchInput').value.toLowerCase();
+        const industry = document.getElementById('industryFilter').value;
+
+        const filtered = stockData.filter(item => {
+            const matchesSearch = item.name.toLowerCase().includes(term) || 
+                                 item.id.includes(term) || 
+                                 item.industry.toLowerCase().includes(term) ||
+                                 item.product.toLowerCase().includes(term);
+            const matchesIndustry = industry === "" || item.industry === industry;
+            return matchesSearch && matchesIndustry;
+        });
+
+        renderStocks(filtered);
+        document.getElementById('totalCount').textContent = filtered.length;
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>
