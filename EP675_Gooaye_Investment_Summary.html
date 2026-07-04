@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股癌 EP675 投資全紀錄 | 內容摘要 + AI 深度分析</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #020617;
+            --card-bg: #0f172a;
+            --accent-color: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --positive: #f43f5e;
+            --highlight: #fbbf24;
+            --sidebar-width: 280px;
+            --ai-accent: #8b5cf6;
+            --section-bg: rgba(30, 41, 59, 0.5);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        aside {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            border-right: 1px solid #1e293b;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+            display: none;
+            z-index: 100;
+        }
+
+        @media (min-width: 1024px) {
+            aside { display: block; }
+            main { margin-left: var(--sidebar-width); }
+        }
+
+        main {
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 60px;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 20px;
+        }
+
+        .ep-tag {
+            background: var(--accent-color);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        h1 { font-size: 2.8rem; margin: 0; letter-spacing: -1px; }
+        .subtitle { color: var(--text-secondary); font-size: 1.2rem; margin-top: 10px; }
+
+        section { 
+            margin-bottom: 100px; 
+            padding: 40px;
+            border-radius: 24px;
+            background: var(--section-bg);
+            border: 1px solid #1e293b;
+        }
+        
+        h2 { 
+            font-size: 2rem; 
+            color: var(--accent-color); 
+            display: flex; 
+            align-items: center; 
+            gap: 15px;
+            margin-bottom: 40px;
+            margin-top: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: #1e293b80;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+            background: #1e293b;
+            transform: translateY(-5px);
+        }
+
+        .card h3 { margin-top: 0; color: var(--highlight); font-size: 1.3rem; }
+        .card p { line-height: 1.7; color: var(--text-secondary); margin-bottom: 0; }
+
+        .important-box {
+            background: rgba(244, 63, 94, 0.1);
+            border-left: 4px solid var(--positive);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+
+        .kw {
+            background: #334155;
+            color: var(--accent-color);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .ai-section {
+            background: rgba(139, 92, 246, 0.1) !important;
+            border: 1px solid var(--ai-accent) !important;
+        }
+        .ai-title { color: var(--ai-accent) !important; }
+
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .stock-table th, .stock-table td {
+            text-align: left;
+            padding: 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+        .stock-table th { color: var(--text-secondary); background: rgba(0,0,0,0.3); }
+        .stock-code { color: var(--ai-accent); font-weight: bold; font-family: monospace; font-size: 1.2rem; }
+
+        .logic-badge {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-color);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .top-btn {
+            position: fixed; bottom: 30px; right: 30px; background: var(--accent-color);
+            color: #000; width: 50px; height: 50px; border-radius: 25px;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; font-weight: bold; z-index: 1000;
+        }
+
+        .nav-item { list-style: none; margin-bottom: 20px; }
+        .nav-link { color: var(--text-secondary); text-decoration: none; transition: 0.2s; font-size: 1.1rem; }
+        .nav-link:hover { color: var(--accent-color); padding-left: 10px; }
+
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 40px; color: var(--accent-color);">EP675 筆記選單</div>
+        <nav id="nav-list">
+            <li class="nav-item"><a href="#venture-game" class="nav-link">肖楠資本與遊戲夢</a></li>
+            <li class="nav-item"><a href="#market-rotation" class="nav-link">資金輪動與強勢股</a></li>
+            <li class="nav-item"><a href="#ai-analysis" class="nav-link">AI 深度分析</a></li>
+        </nav>
+    </aside>
+
+    <main>
+        <header>
+            <div class="ep-tag">EP675</div>
+            <h1>突然想到上集有人許願要我放雲霄飛車我忘了 🎢</h1>
+            <p class="subtitle">2026年7月2日 投資全紀錄：Podcast 內容摘要 + AI 專屬分析</p>
+        </header>
+
+        <div id="content-sections">
+            <section id="venture-game">
+                <h2>肖楠資本與遊戲夢 🎮</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>股東會進展</h3>
+                        <p>主委分享了肖楠資本股東會的近況，原本只打算作為單純的資金贊助方，但因緣際會下與遊戲界人士展開了更深度的合作，目前預計資本額將往三億元邁進，致力於實踐遊戲開發的夢想。</p>
+                    </div>
+                    <div class="card">
+                        <h3>創投的執著與決心</h3>
+                        <p>主委觀察到真正優秀的創投從業者或團隊，即便沒有金主的資金支持，也會用自己的方式持續投入。這種強烈的專注與決心，才是創投領域中能真正取得成功的核心本質。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="market-rotation">
+                <h2>資金輪動與強勢族群 📈</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>盤勢與資金動能</h3>
+                        <p>回顧 6 月底台股在結算時出現強力的反彈拉抬，盤中殺尾盤的恐慌氛圍大幅減輕。目前市場資金依舊非常充裕，資金對成長型題材的反映極為敏銳與熱絡。</p>
+                    </div>
+                    <div class="card">
+                        <h3>矽晶圓提早反應</h3>
+                        <p>雖然市場原先預期矽晶圓族群要到下半年才有明顯的機會，但充裕的資金已經提早進場卡位反應預期，顯現了極強的提前布局動能。</p>
+                    </div>
+                    <div class="card">
+                        <h3>記憶體資金移轉</h3>
+                        <p>記憶體族群因市場對未來報價下滑的疑慮，目前面臨評價修正。市場資金正明顯地從記憶體流出，轉向輪動至被動元件、ABF 載板、矽晶圓及功率元件等強勢板塊。</p>
+                    </div>
+                </div>
+                <div class="important-box">
+                    <strong>主委提醒：</strong>「最該管理的不是部位，是自己。」每天早上開盤前，手指放在下單鍵前應先踩個煞車，釐清自己到底是「照計畫走」還是「被行情推著走」，心態穩住才能在劇烈震盪中生存。
+                </div>
+            </section>
+
+            <section id="ai-analysis" class="ai-section">
+                <h2 class="ai-title">AI 深度分析：台股標的觀察 🤖</h2>
+                <table class="stock-table">
+                    <thead>
+                        <tr>
+                            <th>股票名稱</th>
+                            <th>代碼</th>
+                            <th>分析邏輯</th>
+                            <th>評價</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>國巨</td>
+                            <td class="stock-code">2327</td>
+                            <td>
+                                <span class="logic-badge">漲價受惠</span>
+                                <span class="logic-badge">AI伺服器需求</span>
+                                被動元件龍頭，AI 伺服器對高階 MLCC 的需求非常強勁。若產業界成功向大客戶調漲價格的趨勢確立，EPS 與獲利表現有望大幅上修，需密切留意營收驗證。
+                            </td>
+                            <td>積極關注</td>
+                        </tr>
+                        <tr>
+                            <td>南電</td>
+                            <td class="stock-code">8046</td>
+                            <td>
+                                <span class="logic-badge">ABF載板</span>
+                                <span class="logic-badge">資金回流</span>
+                                受惠於 AI 晶片對載板需求的長線支撐，消息面與籌碼面吸引市場資金流入，股價位階整理後有波段動能。
+                            </td>
+                            <td>偏多留意</td>
+                        </tr>
+                        <tr>
+                            <td>環球晶</td>
+                            <td class="stock-code">6488</td>
+                            <td>
+                                <span class="logic-badge">矽晶圓領頭</span>
+                                <span class="logic-badge">提前反映預期</span>
+                                作為矽晶圓指標股，市場資金提早卡位此族群。雖然基本面復甦時點可能在下半年，但在資金推動下，預期提前反應的行情已在發酵。
+                            </td>
+                            <td>偏多留意</td>
+                        </tr>
+                        <tr>
+                            <td>杰力</td>
+                            <td class="stock-code">5299</td>
+                            <td>
+                                <span class="logic-badge">MOSFET</span>
+                                <span class="logic-badge">訂單外溢</span>
+                                功率元件/MOSFET 市場關注是否會面臨缺貨與交期拉長，一線大廠的訂單外溢效應將有利於杰力等相關台廠。
+                            </td>
+                            <td>逢低布局</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <footer>
+            <p style="text-align: center; color: var(--text-secondary); margin-top: 100px;">
+                &copy; 2026 Gooaye Summary & AI Analysis | 內容僅供參考，投資請審慎評估
+            </p>
+        </footer>
+    </main>
+
+    <a href="#" class="top-btn">TOP</a>
+
+</body>
+</html>
