@@ -78,6 +78,7 @@
             display: none;
             align-items: center;
             gap: 15px;
+            flex-wrap: wrap;
             animation: fadeIn 0.3s ease-in;
         }
 
@@ -235,6 +236,22 @@
                 <option value="<-50">< -50%</option>
                 <option value="<-100">< -100%</option>
             </select>
+            
+            <label style="margin-left: 10px;">且成本篩選：</label>
+            <select id="select-roi-cost" onchange="applyFilter()">
+                <option value="all">-- 全部 --</option>
+                <option value="<4000">< 4000</option>
+                <option value="<=5000"><= 5000</option>
+                <option value=">5000">> 5000</option>
+                <option value=">7500">> 7500</option>
+                <option value=">10000">> 10000</option>
+                <option value=">15000">> 15000</option>
+                <option value=">17500">> 17500</option>
+                <option value=">20000">> 20000</option>
+                <option value=">25000">> 25000</option>
+                <option value=">30000">> 30000</option>
+                <option value=">50000">> 50000</option>
+            </select>
         </div>
 
         <!-- Filter 2: P/L -->
@@ -354,6 +371,16 @@
         applyFilter();
     }
 
+    function matchCondition(val, condition) {
+        if (condition === 'all') return true;
+        if (isNaN(val)) return false;
+        if (condition.startsWith('>=')) return val >= parseFloat(condition.slice(2));
+        if (condition.startsWith('<=')) return val <= parseFloat(condition.slice(2));
+        if (condition.startsWith('>')) return val > parseFloat(condition.slice(1));
+        if (condition.startsWith('<')) return val < parseFloat(condition.slice(1));
+        return true;
+    }
+
     function applyFilter() {
         const selectIds = ['select-roi', 'select-pl', 'select-cost'];
         const condition = document.getElementById(selectIds[currentTabIndex]).value;
@@ -361,17 +388,24 @@
         const tbody = document.getElementById('table-body');
         
         let filtered = rawData.filter(row => {
+            // 1. 過濾 ETF
             if (filterEtf && row[1] && row[1].startsWith('00')) return false;
-            if (condition === 'all') return true;
+            
+            // 2. 主篩選條件
             let val;
-            if (currentTabIndex === 0) val = parseNumber(row[13]);
-            else if (currentTabIndex === 1) val = parseNumber(row[12]);
-            else val = parseNumber(row[5]);
-            if (isNaN(val)) return false;
-            if (condition.startsWith('>=')) return val >= parseFloat(condition.slice(2));
-            if (condition.startsWith('<=')) return val <= parseFloat(condition.slice(2));
-            if (condition.startsWith('>')) return val > parseFloat(condition.slice(1));
-            if (condition.startsWith('<')) return val < parseFloat(condition.slice(1));
+            if (currentTabIndex === 0) val = parseNumber(row[13]); // 報酬率 (N)
+            else if (currentTabIndex === 1) val = parseNumber(row[12]); // 損益 (M)
+            else val = parseNumber(row[5]); // 付出成本 (F)
+            
+            if (!matchCondition(val, condition)) return false;
+            
+            // 3. 報酬率分頁時，如果設定了同時篩選成本
+            if (currentTabIndex === 0) {
+                const costCondition = document.getElementById('select-roi-cost').value;
+                const costVal = parseNumber(row[5]); // 付出成本 (F)
+                if (!matchCondition(costVal, costCondition)) return false;
+            }
+            
             return true;
         });
 
