@@ -137,6 +137,20 @@
 </head>
 <body>
     <div class="container">
+        <div class="calculator" style="margin-bottom: 20px; padding: 15px; border: 1px solid var(--border-color); border-radius: 8px; background: #fff;">
+            <h2 style="margin-top: 0; font-size: 18px; color: var(--primary-color);">簡易小算盤</h2>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                <input type="number" step="any" id="calcMarketValue" placeholder="市值" style="flex: 1; min-width: 100px;">
+                <input type="number" step="any" id="calcProfitLoss" placeholder="損益" style="flex: 1; min-width: 100px;">
+                <input type="number" step="any" id="calcAvgPrice" placeholder="均價" style="flex: 1; min-width: 100px;">
+            </div>
+            <div style="font-size: 15px; background: var(--bg-color); padding: 10px; border-radius: 6px;">
+                <div style="margin-bottom: 5px;"><strong>5000:</strong> <span id="calcResult5000">-</span></div>
+                <div style="margin-bottom: 5px;"><strong>10000:</strong> <span id="calcResult10000">-</span></div>
+                <div><strong>15000:</strong> <span id="calcResult15000">-</span></div>
+            </div>
+        </div>
+
         <header>
             <h1>股票停損監控報表</h1>
             <div class="update-info" id="updateTime">載入中...</div>
@@ -160,6 +174,30 @@
 
     <script>
         const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1Bl9SRtxSp2StQH99wPLn8TyfvSYRlyHu6-tIS2F_UHg/gviz/tq?tqx=out:csv&gid=1134367444';
+        
+        function calculateStopLoss() {
+            const mv = parseFloat(document.getElementById('calcMarketValue').value);
+            const pl = parseFloat(document.getElementById('calcProfitLoss').value);
+            const ap = parseFloat(document.getElementById('calcAvgPrice').value);
+            
+            const res5000 = document.getElementById('calcResult5000');
+            const res10000 = document.getElementById('calcResult10000');
+            const res15000 = document.getElementById('calcResult15000');
+
+            if (!isNaN(mv) && !isNaN(pl) && !isNaN(ap) && ap !== 0) {
+                res5000.textContent = (((mv - pl) - 5000) / ap).toFixed(2);
+                res10000.textContent = (((mv - pl) - 10000) / ap).toFixed(2);
+                res15000.textContent = (((mv - pl) - 15000) / ap).toFixed(2);
+            } else {
+                res5000.textContent = '-';
+                res10000.textContent = '-';
+                res15000.textContent = '-';
+            }
+        }
+
+        document.getElementById('calcMarketValue').addEventListener('input', calculateStopLoss);
+        document.getElementById('calcProfitLoss').addEventListener('input', calculateStopLoss);
+        document.getElementById('calcAvgPrice').addEventListener('input', calculateStopLoss);
         
         let rawData = [];
         let currentData = [];
