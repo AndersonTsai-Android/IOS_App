@@ -138,7 +138,10 @@
 <body>
     <div class="container">
         <div class="calculator" style="margin-bottom: 20px; padding: 15px; border: 1px solid var(--border-color); border-radius: 8px; background: #fff;">
-            <h2 style="margin-top: 0; font-size: 18px; color: var(--primary-color);">簡易小算盤</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2 style="margin: 0; font-size: 18px; color: var(--primary-color);">簡易小算盤</h2>
+                <button id="calcClearBtn" style="padding: 5px 12px; background: #f1f3f4; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; color: #5f6368; font-size: 14px; transition: background-color 0.2s;">清除</button>
+            </div>
             <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
                 <input type="number" step="any" id="calcMarketValue" placeholder="市值" style="flex: 1; min-width: 100px;">
                 <input type="number" step="any" id="calcProfitLoss" placeholder="損益" style="flex: 1; min-width: 100px;">
@@ -147,7 +150,8 @@
             <div style="font-size: 15px; background: var(--bg-color); padding: 10px; border-radius: 6px;">
                 <div style="margin-bottom: 5px;"><strong>5000:</strong> <span id="calcResult5000">-</span></div>
                 <div style="margin-bottom: 5px;"><strong>10000:</strong> <span id="calcResult10000">-</span></div>
-                <div><strong>15000:</strong> <span id="calcResult15000">-</span></div>
+                <div style="margin-bottom: 5px;"><strong>15000:</strong> <span id="calcResult15000">-</span></div>
+                <div><strong>20000:</strong> <span id="calcResult20000">-</span></div>
             </div>
         </div>
 
@@ -183,21 +187,31 @@
             const res5000 = document.getElementById('calcResult5000');
             const res10000 = document.getElementById('calcResult10000');
             const res15000 = document.getElementById('calcResult15000');
+            const res20000 = document.getElementById('calcResult20000');
 
             if (!isNaN(mv) && !isNaN(pl) && !isNaN(ap) && ap !== 0) {
-                res5000.textContent = (((mv - pl) - 5000) / ap).toFixed(2);
-                res10000.textContent = (((mv - pl) - 10000) / ap).toFixed(2);
-                res15000.textContent = (((mv - pl) - 15000) / ap).toFixed(2);
+                res5000.textContent = (((mv - pl) - 5000) / ap).toFixed(1);
+                res10000.textContent = (((mv - pl) - 10000) / ap).toFixed(1);
+                res15000.textContent = (((mv - pl) - 15000) / ap).toFixed(1);
+                res20000.textContent = (((mv - pl) - 20000) / ap).toFixed(1);
             } else {
                 res5000.textContent = '-';
                 res10000.textContent = '-';
                 res15000.textContent = '-';
+                res20000.textContent = '-';
             }
         }
 
         document.getElementById('calcMarketValue').addEventListener('input', calculateStopLoss);
         document.getElementById('calcProfitLoss').addEventListener('input', calculateStopLoss);
         document.getElementById('calcAvgPrice').addEventListener('input', calculateStopLoss);
+        
+        document.getElementById('calcClearBtn').addEventListener('click', () => {
+            document.getElementById('calcMarketValue').value = '';
+            document.getElementById('calcProfitLoss').value = '';
+            document.getElementById('calcAvgPrice').value = '';
+            calculateStopLoss();
+        });
         
         let rawData = [];
         let currentData = [];
